@@ -8,10 +8,7 @@ import params
 
 #METRO
 metro1 = sl_metro.Metro(params.WAKE_METRO)
-
-#Time
-import datetime
-time = datetime.datetime(2100, 1, 1, hour = 0, minute = 0, second = 0, microsecond = 0)
+metro2 = sl_metro.Metro(params.DELAY_METRO)
 
 if __name__ == "__main__":
   try:
@@ -20,9 +17,10 @@ if __name__ == "__main__":
     while 1:
       timer.update()
       if metro1.update():
-        if timer.isTime():
-          #print "wake up"
-          sender.send("/wake", timer.isTime())
-
+        if timer.isTime() > 0:
+          print "wake up"
+          sender.send("/wake", timer.getDelayTime())
+      if metro2.update():
+        timer.updateDelayTime()
   except KeyboardInterrupt:
     timer.close()
